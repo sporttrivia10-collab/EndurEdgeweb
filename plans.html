@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Plans — EndurEdge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a; --white: #fafafa;
+    --gray-100: #f2f1ef; --gray-300: #d0ceca;
+    --gray-500: #8a8680; --gray-700: #3d3b38;
+    --red: #c0392b;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--black); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(250,250,250,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .nav-logo { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a { font-size: 14px; color: var(--gray-700); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--black); font-weight: 500; }
+  .nav-cta { background: var(--black) !important; color: var(--white) !important; padding: 0.6rem 1.4rem !important; border-radius: 2px; font-weight: 500 !important; transition: background 0.2s !important; }
+  .nav-cta:hover { background: var(--red) !important; }
+
+  .page-header { padding: 10rem 3rem 4rem; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid var(--gray-300); }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--red); }
+  .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .page-header p { font-size: 17px; font-weight: 300; color: var(--gray-700); max-width: 56ch; line-height: 1.7; }
+
+  .plans-section { max-width: 1200px; margin: 0 auto; padding: 4rem 3rem; }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+  .cards-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+
+  .plan-card { border: 1.5px solid var(--gray-300); border-radius: 3px; display: flex; flex-direction: column; transition: border-color 0.2s, transform 0.15s; background: var(--white); position: relative; overflow: hidden; }
+  .plan-card:hover { border-color: var(--black); transform: translateY(-3px); }
+  .plan-card.featured { border-color: var(--black); }
+  .plan-card.featured::before { content: 'Best seller'; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--red); color: var(--white); padding: 0.3rem 0.9rem; position: absolute; top: 0; right: 0; border-bottom-left-radius: 3px; }
+  .plan-card.free-card { border-style: dashed; }
+
+  .card-top { padding: 1.75rem 1.75rem 1.25rem; border-bottom: 1px solid var(--gray-300); flex-shrink: 0; }
+  .card-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 0.5rem; }
+  .card-name { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.15; margin-bottom: 0.35rem; }
+  .card-tagline { font-size: 13px; color: var(--gray-500); font-weight: 300; margin-bottom: 1.25rem; line-height: 1.5; }
+  .card-price { display: flex; align-items: baseline; gap: 0.4rem; }
+  .price-amount { font-family: 'DM Mono', monospace; font-size: 1.75rem; font-weight: 500; letter-spacing: -0.03em; }
+  .price-note { font-size: 13px; color: var(--gray-500); }
+
+  .card-body { padding: 1.25rem 1.75rem; flex: 1; display: flex; flex-direction: column; }
+  .card-meta { display: flex; gap: 0.6rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .meta-pill { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gray-100); color: var(--gray-700); padding: 0.3rem 0.7rem; border-radius: 2px; }
+  .card-features { list-style: none; margin-bottom: 1.5rem; flex: 1; }
+  .card-features li { font-size: 13px; color: var(--gray-700); padding: 0.5rem 0; border-bottom: 1px solid var(--gray-100); display: flex; gap: 0.6rem; align-items: flex-start; font-weight: 300; line-height: 1.5; }
+  .card-features li::before { content: '→'; color: var(--red); flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+
+  .btn-buy { display: block; width: 100%; text-align: center; background: var(--black); color: var(--white); padding: 0.85rem 1.5rem; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; border: 1.5px solid var(--black); border-radius: 2px; transition: background 0.2s, border-color 0.2s; }
+  .btn-buy:hover { background: var(--red); border-color: var(--red); }
+  .btn-buy.outline { background: transparent; color: var(--black); }
+  .btn-buy.outline:hover { background: var(--black); color: var(--white); }
+  .btn-buy.free { background: transparent; color: var(--gray-700); border-color: var(--gray-300); }
+  .btn-buy.free:hover { background: var(--gray-100); border-color: var(--gray-500); color: var(--black); }
+
+  .section-divider { border: none; border-top: 1px solid var(--gray-300); margin: 3rem 0; }
+
+  .hint-card { display: flex; flex-direction: column; justify-content: center; padding: 2rem; border: 1.5px solid var(--gray-300); border-radius: 3px; background: var(--gray-100); }
+  .hint-card .hint-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 0.75rem; }
+  .hint-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+  .hint-card p { font-size: 14px; color: var(--gray-700); font-weight: 300; line-height: 1.65; margin-bottom: 1.25rem; }
+  .hint-card a { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--red); text-decoration: none; text-transform: uppercase; }
+  .hint-card a:hover { text-decoration: underline; }
+
+  .coaching-banner { background: var(--black); border-radius: 3px; padding: 3.5rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; max-width: 1200px; margin: 0 auto 4rem; }
+  .banner-text .eyebrow { color: var(--red); margin-bottom: 0.5rem; }
+  .banner-text h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 0.6rem; }
+  .banner-text p { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.55); max-width: 44ch; line-height: 1.65; }
+  .banner-price { font-family: 'DM Mono', monospace; font-size: 1.1rem; color: rgba(255,255,255,0.35); margin-top: 0.5rem; }
+  .btn-banner { flex-shrink: 0; display: inline-block; background: var(--white); color: var(--black); padding: 1rem 2.25rem; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; border-radius: 2px; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+  .btn-banner:hover { background: var(--red); color: var(--white); }
+
+  footer { border-top: 1px solid var(--gray-300); padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+  footer p, footer a { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gray-500); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  footer a:hover { color: var(--red); }
+
+  @media (max-width: 960px) {
+    nav { padding: 1rem 1.5rem; }
+    .page-header, .plans-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .cards-grid-2 { grid-template-columns: 1fr; }
+    .coaching-banner { flex-direction: column; align-items: flex-start; margin: 0 1.5rem 3rem; }
+  }
+  @media (max-width: 600px) { .cards-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">EndurEdge</a>
+  <div class="nav-links">
+    <a href="index.html#methodology">Method</a>
+    <a href="plans.html" class="active">Plans</a>
+    <a href="index.html#testimonials">Results</a>
+    <a href="https://enduredge.gumroad.com/l/msmdd" target="_blank" class="nav-cta">Work with me</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">All products</div>
+  <h1>Train with the science.<br><em>Break your limits.</em></h1>
+  <p>Every product is built on exercise physiology — not guesswork. Pick the plan that matches your goal and download instantly from Gumroad.</p>
+</div>
+
+<div class="plans-section">
+
+  <div class="cards-grid">
+
+    <div class="plan-card featured">
+      <div class="card-top">
+        <div class="card-tag">Running guide</div>
+        <div class="card-name">Peak Protocol</div>
+        <div class="card-tagline">Your complete science-based running guide</div>
+        <div class="card-price" style="flex-direction:column; align-items:flex-start; gap:0.2rem;">
+          <span style="font-family:'DM Mono',monospace; font-size:0.95rem; color:var(--gray-500); text-decoration:line-through;">$24.99</span>
+          <div style="display:flex; align-items:baseline; gap:0.4rem;">
+            <span class="price-amount">$12.49</span>
+            <span class="price-note">one-time</span>
+            <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; background:var(--red); color:var(--white); padding:0.2rem 0.5rem; border-radius:2px; margin-left:0.25rem;">50% off</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-pill">Instant download</span>
+          <span class="meta-pill">All levels</span>
+        </div>
+        <ul class="card-features">
+          <li>Full science-backed running framework</li>
+          <li>Structured sessions with clear rationale</li>
+          <li>Interval, tempo & long run methodology</li>
+          <li>Strength and injury prevention protocols</li>
+          <li>Pacing guides and race-day strategy</li>
+        </ul>
+        <a href="https://enduredge.gumroad.com/l/PeakProtocol" target="_blank" class="btn-buy">Get Peak Protocol — $12.49</a>
+      </div>
+    </div>
+
+    <div class="plan-card">
+      <div class="card-top">
+        <div class="card-tag">12-week programme</div>
+        <div class="card-name">VO₂ Max Protocol</div>
+        <div class="card-tagline">12 weeks to a higher aerobic ceiling</div>
+        <div class="card-price">
+          <span class="price-amount">$9.99</span>
+          <span class="price-note">one-time</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-pill">12 weeks</span>
+          <span class="meta-pill">Instant download</span>
+        </div>
+        <ul class="card-features">
+          <li>Progressive VO₂ max interval sessions</li>
+          <li>Structured at 95–100% max aerobic velocity</li>
+          <li>Week-by-week volume and intensity build</li>
+          <li>Session rationale explained throughout</li>
+        </ul>
+        <a href="https://enduredge.gumroad.com/l/vbkiuu" target="_blank" class="btn-buy outline">Get VO₂ Max Protocol — $9.99</a>
+      </div>
+    </div>
+
+    <div class="plan-card">
+      <div class="card-top">
+        <div class="card-tag">10-week programme</div>
+        <div class="card-name">The 3-Session System</div>
+        <div class="card-tagline">Run faster with less training</div>
+        <div class="card-price">
+          <span class="price-amount">$9.99</span>
+          <span class="price-note">one-time</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-pill">10 weeks</span>
+          <span class="meta-pill">3 sessions/wk</span>
+        </div>
+        <ul class="card-features">
+          <li>Maximum return from minimum sessions</li>
+          <li>Built for busy athletes who can't train daily</li>
+          <li>Precisely targeted intervals and recovery</li>
+          <li>Sustainable — built to avoid burnout</li>
+        </ul>
+        <a href="https://enduredge.gumroad.com/l/EndurEdge" target="_blank" class="btn-buy outline">Get 3-Session System — $9.99</a>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="cards-grid-2">
+
+    <div class="plan-card free-card">
+      <div class="card-top">
+        <div class="card-tag">Free resource</div>
+        <div class="card-name">VO₂ Protocol</div>
+        <div class="card-tagline">An introduction to VO₂ max training — pay what you want</div>
+        <div class="card-price">
+          <span class="price-amount">Free</span>
+          <span class="price-note">/ pay what you want</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-pill">Instant download</span>
+          <span class="meta-pill">Beginner friendly</span>
+        </div>
+        <ul class="card-features">
+          <li>Introduction to VO₂ max and why it matters</li>
+          <li>How to structure your first aerobic intervals</li>
+          <li>A starting point before the full 12-week protocol</li>
+        </ul>
+        <a href="https://enduredge.gumroad.com/l/Vo2" target="_blank" class="btn-buy free">Download Free →</a>
+      </div>
+    </div>
+
+    <div class="hint-card">
+      <div class="hint-label">Not sure where to start?</div>
+      <h3>Start free. Upgrade when you're ready.</h3>
+      <p>Download the free VO₂ Protocol to understand the method. When it clicks — the full 12-week programme takes you the rest of the way.</p>
+      <a href="https://enduredge.gumroad.com/l/Vo2" target="_blank">Get the free guide →</a>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="coaching-banner">
+  <div class="banner-text">
+    <div class="eyebrow">1-on-1 coaching</div>
+    <h2>Want a plan built entirely<br>around you?</h2>
+    <p>Full physiological profiling, a custom training plan, weekly check-ins, and direct access. Limited spots — 3 remaining.</p>
+    <div class="banner-price">$50 / month</div>
+  </div>
+  <a href="https://enduredge.gumroad.com/l/msmdd" target="_blank" class="btn-banner">Apply for Coaching</a>
+</div>
+
+<footer>
+  <p>© 2025 EndurEdge — Evidence-based coaching</p>
+  <div style="display:flex; gap:2rem;">
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="mailto:enduredge10@outlook.com">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EndurEdge — Science-Based Running Coaching</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #fafafa;
+    --gray-100: #f2f1ef;
+    --gray-300: #d0ceca;
+    --gray-500: #8a8680;
+    --gray-700: #3d3b38;
+    --red: #c0392b;
+    --red-light: #f9eeec;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(250,250,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-700);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+  .nav-cta {
+    background: var(--black) !important;
+    color: var(--white) !important;
+    padding: 0.6rem 1.4rem !important;
+    border-radius: 2px;
+    font-weight: 500 !important;
+    transition: background 0.2s, color 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--red) !important; color: var(--white) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 14rem 3rem 8rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: end;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--red);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 2rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gray-700);
+  }
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gray-700);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    max-width: 42ch;
+  }
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--black);
+    color: var(--white);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    border: 1.5px solid var(--black);
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn-primary:hover { background: var(--red); border-color: var(--red); }
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--black);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    border: 1.5px solid var(--black);
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { background: var(--black); color: var(--white); }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 0.5rem;
+  }
+  .stat-card {
+    border: 1px solid var(--gray-300);
+    padding: 1.5rem;
+    border-radius: 3px;
+    background: var(--white);
+  }
+  .stat-card:first-child { border-left: 3px solid var(--red); }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--gray-300); }
+  .section-wrap { max-width: 1200px; margin: 0 auto; padding: 6rem 3rem; }
+
+  /* ── METHODOLOGY ── */
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 22ch;
+    margin-bottom: 1.5rem;
+  }
+  .section-body {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--gray-700);
+    max-width: 56ch;
+    margin-bottom: 3rem;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    border: 1px solid var(--gray-300);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .pillar {
+    padding: 2.5rem 2rem;
+    background: var(--white);
+    border-right: 1px solid var(--gray-300);
+  }
+  .pillar:last-child { border-right: none; }
+  .pillar-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .pillar h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .pillar p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--gray-700);
+    font-weight: 300;
+  }
+
+  /* ── PLANS ── */
+  .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .plan-card {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .plan-card:hover {
+    border-color: var(--black);
+    box-shadow: 4px 4px 0 var(--gray-300);
+  }
+  .plan-card.featured {
+    border-color: var(--black);
+    position: relative;
+  }
+  .plan-header { padding: 2rem 2rem 1.5rem; border-bottom: 1px solid var(--gray-300); }
+  .plan-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--black);
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+  .plan-badge.coaching { background: var(--red); }
+  .plan-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .plan-tagline { font-size: 14px; color: var(--gray-500); font-weight: 300; }
+  .plan-price {
+    font-family: 'DM Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    margin-top: 1.25rem;
+    color: var(--black);
+  }
+  .plan-price span { font-size: 16px; color: var(--gray-500); font-weight: 400; }
+  .plan-body { padding: 1.75rem 2rem 2rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li {
+    font-size: 14px;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-700);
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  .plan-features li::before {
+    content: '→';
+    color: var(--red);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-bg { background: var(--gray-100); }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 3rem; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .testimonial {
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 3px;
+    padding: 2rem;
+  }
+  .testimonial.highlight {
+    border-color: var(--black);
+    border-top: 3px solid var(--red);
+  }
+  .stars {
+    font-size: 14px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .testimonial-metric {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.25rem;
+  }
+  .testimonial-quote {
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--gray-700);
+    margin-bottom: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+  }
+  .testimonial-author {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gray-500);
+  }
+  .testimonial-author strong {
+    color: var(--black);
+    display: block;
+    margin-bottom: 0.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── COACHING CTA ── */
+  .coaching-section { background: var(--black); }
+  .coaching-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+  .coaching-inner .section-eyebrow { color: var(--red); }
+  .coaching-inner .section-title { color: var(--white); }
+  .coaching-inner .section-body { color: rgba(255,255,255,0.6); }
+  .coaching-perks { list-style: none; margin-bottom: 2.5rem; }
+  .coaching-perks li {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    font-weight: 300;
+  }
+  .coaching-perks li::before { content: '—'; color: var(--red); flex-shrink: 0; }
+  .btn-white {
+    display: inline-block;
+    background: var(--white);
+    color: var(--black);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    border: 1.5px solid var(--white);
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn-white:hover { background: var(--red); border-color: var(--red); color: var(--white); }
+
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--gray-300);
+    padding: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gray-500);
+    letter-spacing: 0.08em;
+  }
+  footer a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gray-500);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  footer a:hover { color: var(--red); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-label { animation: fadeUp 0.6s ease both; }
+  .hero h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .btn-group { animation: fadeUp 0.6s 0.3s ease both; }
+  .hero-stats { animation: fadeUp 0.7s 0.2s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 10rem 1.5rem 5rem; }
+    .hero-stats { flex-direction: row; }
+    .pillars { grid-template-columns: 1fr; }
+    .pillar { border-right: none; border-bottom: 1px solid var(--gray-300); }
+    .plans-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .coaching-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .coaching-image-placeholder { display: none; }
+    .section-wrap, .testimonials-inner { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">EndurEdge</a>
+  <div class="nav-links">
+    <a href="#methodology">Method</a>
+    <a href="plans.html">Plans</a>
+    <a href="#testimonials">Results</a>
+    <a href="https://enduredge.gumroad.com/l/msmdd" target="_blank" class="nav-cta">Work with me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div>
+      <div class="hero-label">Evidence-based endurance coaching</div>
+      <h1>Train with the science.<br><em>Break your limits.</em></h1>
+      <p class="hero-sub">
+        Science-driven training for runners and endurance athletes at every level — whether you're chasing a sub-20 5K, a half marathon PB, a marathon finish, or simply building a base that lasts.
+      </p>
+      <div class="btn-group">
+        <a href="plans.html" class="btn-primary">Browse Training Plans</a>
+        <a href="https://enduredge.gumroad.com/l/msmdd" target="_blank" class="btn-secondary">1-on-1 Coaching</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-number">5K–42K</div>
+        <div class="stat-label">Plans for every distance — from sprint to marathon</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">12 wk</div>
+        <div class="stat-label">Structured progressive overload cycle</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1 goal</div>
+        <div class="stat-label">Your target. Built into every single session.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="section-wrap">
+    <div class="section-eyebrow">The method</div>
+    <h2 class="section-title">Not a guess. A physiological model.</h2>
+    <p class="section-body">
+      Every session is built on peer-reviewed exercise physiology — whether you're training for a 5K, a half marathon, or a full. Intervals are calculated from your lactate threshold. Long runs target aerobic fat-oxidation zones. Recovery is a stimulus, not a skip day.
+    </p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01 / INTERVALS</div>
+        <h3>VO₂ Max Development</h3>
+        <p>Short, high-intensity efforts at 95–100% of maximum aerobic velocity. Designed to raise your oxygen ceiling — the single biggest predictor of performance.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02 / TEMPO</div>
+        <h3>Lactate Threshold Training</h3>
+        <p>Sustained efforts just below the lactate threshold shift the curve — so your body clears lactic acid faster, keeping you fast for longer at race pace.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03 / LONG RUN</div>
+        <h3>Aerobic Base Building</h3>
+        <p>Easy-to-moderate long runs expand mitochondrial density and fat oxidation capacity. The invisible engine that makes everything else possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PLANS -->
+<section id="plans">
+  <div class="section-wrap">
+    <div class="section-eyebrow">Get started</div>
+    <h2 class="section-title">Start free or go all in.</h2>
+    <p class="section-body">
+      Download the free VO₂ Protocol to understand the method, or jump straight into 1-on-1 coaching for a fully personalised programme. See all plans on the plans page.
+    </p>
+    <div class="plans-grid">
+      <div class="plan-card featured">
+        <div class="plan-header">
+          <div class="plan-badge coaching">1-on-1 Coaching</div>
+          <div class="plan-name">Personal Coaching</div>
+          <div class="plan-tagline">Fully custom — built around your biology</div>
+          <div class="plan-price">$50 <span>/ month</span></div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-features">
+            <li>Full physiological profile and baseline assessment</li>
+            <li>Custom training plan built from scratch</li>
+            <li>Weekly session analysis and plan adjustments</li>
+            <li>Direct messaging access — ask anything, anytime</li>
+            <li>Race-day strategy and pacing plans</li>
+            <li>Limited spots — 3 remaining</li>
+          </ul>
+          <a href="https://enduredge.gumroad.com/l/msmdd" target="_blank" class="btn-primary" style="width:100%; text-align:center; display:block;">Apply for Coaching</a>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-header">
+          <div class="plan-badge">Free resource</div>
+          <div class="plan-name">VO₂ Protocol</div>
+          <div class="plan-tagline">Introduction to VO₂ max training — pay what you want</div>
+          <div class="plan-price">Free <span>/ pay what you want</span></div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-features">
+            <li>Introduction to VO₂ max and why it matters</li>
+            <li>How to structure your first aerobic intervals</li>
+            <li>A starting point before the full 12-week protocol</li>
+            <li>Instant download from Gumroad</li>
+          </ul>
+          <a href="https://enduredge.gumroad.com/l/Vo2" target="_blank" class="btn-secondary" style="width:100%; text-align:center; display:block;">Download Free</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testimonials-bg">
+  <div class="testimonials-inner">
+    <div class="section-eyebrow">Results</div>
+    <h2 class="section-title">Numbers don't lie.</h2>
+    <div class="testimonials-grid">
+
+      <div class="testimonial highlight">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-metric">68→78</div>
+        <div class="metric-label">VO₂ max · 6 months</div>
+        <p class="testimonial-quote">
+          "I increased my VO₂ max from 68 to 78 in 6 months using this program. I've never had structured training explained to me with this kind of scientific depth — every session made sense."
+        </p>
+        <div class="testimonial-author">
+          <strong>Thomas H.</strong>
+          Professional skier · Norwegian national team
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-metric">22:14 → 19:38</div>
+        <div class="metric-label">5K time · 16 weeks</div>
+        <p class="testimonial-quote">
+          "I'd been stuck at 22 minutes for two years. The interval structure in week 6 broke everything open. Crossed sub-20 on my first race back."
+        </p>
+        <div class="testimonial-author">
+          <strong>Maren S.</strong>
+          Amateur runner · Bergen
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-metric">−4 min</div>
+        <div class="metric-label">5K PB drop · 12 weeks</div>
+        <p class="testimonial-quote">
+          "What I appreciated most was knowing *why* I was doing each session, not just what. That made the hard workouts actually stick."
+        </p>
+        <div class="testimonial-author">
+          <strong>Erik L.</strong>
+          Age 41 · First sub-20 after coaching
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 1-ON-1 COACHING -->
+<section id="coaching" class="coaching-section">
+  <div class="coaching-inner">
+    <div>
+      <div class="section-eyebrow">1-on-1 Coaching</div>
+      <h2 class="section-title" style="color:#fafafa;">Built around your biology.</h2>
+      <p class="section-body">
+        For athletes who want fully individualised training — physiological profiling, weekly check-ins, and a plan that adapts as you adapt. Limited spots available.
+      </p>
+      <ul class="coaching-perks">
+        <li>Full physiological profile and baseline assessment</li>
+        <li>Custom 12–24 week training plan built from scratch</li>
+        <li>Weekly session analysis and plan adjustments</li>
+        <li>Direct messaging access — ask anything, anytime</li>
+        <li>Race-day strategy and pacing plans</li>
+        <li>Nutrition timing guidance for performance</li>
+      </ul>
+      <a href="https://enduredge.gumroad.com/l/msmdd" target="_blank" class="btn-white">Apply for Coaching</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 EndurEdge — Evidence-based coaching</p>
+  <div style="display:flex; gap:2rem;">
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="mailto:enduredge10@outlook.com">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
